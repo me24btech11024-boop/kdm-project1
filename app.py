@@ -48,7 +48,7 @@ def layout_4bar():
             html.Button("📊 Generate Plots", id="btn-plots-4b", n_clicks=0, style={'width': '100%', 'padding': '10px', 'marginBottom': '10px'}),
             html.Button("💾 Download CSV", id="btn-download-4b", n_clicks=0, style={'width': '100%', 'padding': '10px', 'backgroundColor': '#4CAF50', 'color': 'white'}),
             dcc.Download(id="download-csv-4b"),
-            dcc.Interval(id='anim-loop-4b', interval=30, n_intervals=0)
+            dcc.Interval(id='anim-loop-4b', interval=150, n_intervals=0)
         ]),
         html.Div(style={'width': '70%', 'padding': '0px', 'display': 'flex', 'flexDirection': 'column', 'height': '100vh'}, children=[
             html.Div(style={'height': '60%'}, children=[dcc.Graph(id='live-graph-4b', style={'height': '100%'})]),
@@ -71,7 +71,7 @@ def layout_slider():
             html.Button("📊 Generate Plots", id="btn-plots-sc", n_clicks=0, style={'width': '100%', 'padding': '10px', 'marginBottom': '10px'}),
             html.Button("💾 Download CSV", id="btn-download-sc", n_clicks=0, style={'width': '100%', 'padding': '10px', 'backgroundColor': '#4CAF50', 'color': 'white'}),
             dcc.Download(id="download-csv-sc"),
-            dcc.Interval(id='anim-loop-sc', interval=30, n_intervals=0)
+            dcc.Interval(id='anim-loop-sc', interval=150, n_intervals=0)
         ]),
         html.Div(style={'width': '70%', 'padding': '0px', 'display': 'flex', 'flexDirection': 'column', 'height': '100vh'}, children=[
             html.Div(style={'height': '60%'}, children=[dcc.Graph(id='live-graph-sc', style={'height': '100%'})]),
@@ -120,7 +120,7 @@ def update_4b_anim(L1, L2, L3, L4, CpL, CpA_deg, speed, n_intervals):
     fig.add_trace(go.Scatter(x=xP_v, y=yP_v, mode='lines', line=dict(color='cyan', dash='dash')))
 
     num_frames = len(th2_v)
-    step_idx = n_intervals * speed
+    step_idx = n_intervals * speed * 4
     if is_grashof: idx = int(step_idx % num_frames)
     else:
         idx = int(step_idx % (2 * num_frames))
@@ -192,7 +192,7 @@ def update_sc_anim(r, L, e, speed, n_intervals):
     if not np.any(valid): return fig, "Cannot Assemble", {'color': 'red'}
 
     th2_v = th2_sw[valid]
-    idx = int((n_intervals * speed) % len(th2_v))
+    idx = int((n_intervals * speed * 4) % len(th2_v))
             
     th2_cur = th2_v[idx]
     xA, yA = r * np.cos(th2_cur), r * np.sin(th2_cur)
@@ -242,4 +242,5 @@ def update_sc_data(btn_p, btn_d, r, L, e):
 # =====================================================================
 if __name__ == '__main__':
     # Runs the entire master app on a single port!
+
     app.run(debug=True, port=8060)
